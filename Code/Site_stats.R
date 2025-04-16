@@ -3,6 +3,7 @@ library(tidyverse)
 library(readxl)
 library(pairwiseAdonis)
 library(ggtext)
+library(ggforce)
 
 fly_site <- read_excel("C:\\Users\\DELL\\Documents\\Git in R\\Urban-Ecology\\Data\\Fly_community.xlsx",
                        sheet = "Site")
@@ -255,19 +256,19 @@ ggplot()  +
   )
 
 
-###############################################################################
+#################################################################################
 
 
-anova(betadisper(fly_dist, fly_cat$Method))
+anova(betadisper(fly_dist, fly_cat$Site))
 
-adonis2 (fly_dist~Method, 
+adonis2 (fly_dist~Site, 
          data = fly_cat, permutations = 9999, # fly_cat from line 21
          method = "jaccard")
 
-pairwise2 <- pairwise.adonis(fly_dist, # from line 30
-                             fly_cat$Method, sim.method = "jaccard",
+pairwise3 <- pairwise.adonis(fly_dist, # from line 30
+                             fly_cat$Site, sim.method = "jaccard",
                              perm = 9999 )
-pairwise2
+pairwise3
 
 
 ggplot()  +
@@ -280,6 +281,7 @@ ggplot()  +
     width = 0.09,  # horizontal jitter
     height = 0.09  # vertical jitter
   ) + 
+  ylim(-1.3, 1) + 
   scale_colour_manual(values = c("black","blue", "red"))+
   scale_fill_manual(values = c("black","blue", "red"))+
   theme(
@@ -288,14 +290,14 @@ ggplot()  +
   geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
   geom_vline(xintercept = 0, linetype = "dashed", color = "black")+
   theme_minimal()+
-  stat_ellipse(data = method_comb, 
-               aes(x = MDS1, y = MDS2, 
-                   group = Site, 
-                   color = Site), 
-               geom = "path", 
-               level = 0.95, 
-               linewidth = 0.3,   
-               show.legend = NA) +
+  geom_mark_hull(
+    data = method_comb,
+    aes(x = MDS1, y = MDS2, group = Site, fill = Site, color = Site),
+    concavity = 30,
+    alpha = 0.05,
+    linewidth = 0.6,
+    show.legend = FALSE
+  ) +
   guides(
     color = guide_legend(title = "Areas"),   
     shape = "none", 
@@ -303,4 +305,5 @@ ggplot()  +
     size = "none",
     alpha = "none"
   )
+
 
