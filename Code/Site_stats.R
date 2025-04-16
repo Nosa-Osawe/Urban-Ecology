@@ -11,7 +11,7 @@ sum(is.na(fly_site))
 fly_site <- replace(fly_site, is.na(fly_site), 0) %>% 
   rename(Method="Collection Method")
 # view(fly_site)
-fly_site$`Collection Method`
+ 
 fly_site <- fly_site %>% 
   mutate(Longitude=  as.numeric(str_remove(Longitude, "°N")),
          Latitude = as.numeric(str_remove(Latitude, "°E")))
@@ -19,7 +19,7 @@ fly_site <- fly_site %>%
 head(fly_site, 10)
 
 #    PREP for MENTEL TESTS
-fly_nmds <- fly_site[, 7:14]
+fly_nmds <- fly_site[, 7:13]
 fly_cat <- fly_site[, 1:6]
 fly_coor <- fly_site[, 3:4]
 
@@ -180,6 +180,7 @@ ggplot() +
   )
  
 
+# Method of fly collection (Bottle trap & Sweep nets)
 
 fly_distance<- vegdist(fly_nmds_hell, method = "bray")
 anova(betadisper(fly_distance, fly_cat$Method))
@@ -190,3 +191,116 @@ adonis2 (fly_nmds~Method,
 
 pairwise2 <- pairwise.adonis(fly_distance,fly_cat$Method)
 pairwise2
+
+###########################################################
+set.seed(9999)
+ 
+anova(betadisper(fly_dist, fly_cat$Method))
+
+adonis2 (fly_dist~Method, 
+         data = fly_cat, permutations = 9999, # fly_cat from line 21
+         method = "jaccard")
+
+pairwise2 <- pairwise.adonis(fly_dist, # from line 30
+                             fly_cat$Method, sim.method = "jaccard",
+                              perm = 9999 )
+pairwise2
+
+
+method_jacc_nmds <- metaMDS(fly_dist, distance = "jaccard", k=2, na.rm = TRUE)
+
+method_jacc_nmds$stress
+stressplot(method_jacc_nmds)
+
+scores(method_jacc_nmds) 
+
+nmds_method <- as.data.frame(method_jacc_nmds$points)
+method_comb <- as.data.frame(cbind(nmds_method, fly_cat))
+
+method_comb
+# 
+ggplot()  +
+  
+  geom_jitter(
+  data = method_comb, 
+  aes(x = MDS1, y = MDS2, colour = Method), 
+  size = 6, 
+  shape = 3,
+  alpha = 0.7, 
+  width = 0.04,  # horizontal jitter
+  height = 0.04  # vertical jitter
+) + 
+  scale_colour_manual(values = c("orange","blue"))+
+  scale_fill_manual(values = c("orange","blue"))+
+  theme(
+    text = element_text(family = "Times New Roman", size = 20)
+  ) + labs(x = "NMDS1", y = "NMDS2")+
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "black")+
+  theme_minimal()+
+  stat_ellipse(data = method_comb, 
+               aes(x = MDS1, y = MDS2, 
+                   group = Method, 
+                   color = Method), 
+               geom = "path", 
+               level = 0.90, 
+               linewidth = 0.2,   
+               show.legend = NA) +
+  guides(
+    color = guide_legend(title = "Collection Method"),   
+    shape = "none", 
+    fill = "none",
+    size = "none",
+    alpha = "none"
+  )
+
+
+###############################################################################
+
+
+anova(betadisper(fly_dist, fly_cat$Method))
+
+adonis2 (fly_dist~Method, 
+         data = fly_cat, permutations = 9999, # fly_cat from line 21
+         method = "jaccard")
+
+pairwise2 <- pairwise.adonis(fly_dist, # from line 30
+                             fly_cat$Method, sim.method = "jaccard",
+                             perm = 9999 )
+pairwise2
+
+
+ggplot()  +
+  geom_jitter(
+    data = method_comb, 
+    aes(x = MDS1, y = MDS2, colour = Site, fill= Site), 
+    size = 4, 
+   # shape = 1,
+    alpha = 0.6, 
+    width = 0.09,  # horizontal jitter
+    height = 0.09  # vertical jitter
+  ) + 
+  scale_colour_manual(values = c("black","blue", "red"))+
+  scale_fill_manual(values = c("black","blue", "red"))+
+  theme(
+    text = element_text(family = "Times New Roman", size = 20)
+  ) + labs(x = "NMDS1", y = "NMDS2")+
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "black")+
+  theme_minimal()+
+  stat_ellipse(data = method_comb, 
+               aes(x = MDS1, y = MDS2, 
+                   group = Site, 
+                   color = Site), 
+               geom = "path", 
+               level = 0.95, 
+               linewidth = 0.3,   
+               show.legend = NA) +
+  guides(
+    color = guide_legend(title = "Areas"),   
+    shape = "none", 
+    fill = "none",
+    size = "none",
+    alpha = "none"
+  )
+
