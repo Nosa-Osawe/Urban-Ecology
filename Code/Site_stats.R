@@ -308,7 +308,11 @@ ggplot()  +
 
 
 
-method_compare <- fly_site %>% 
+########################-------------------------------------------------------
+
+# 1 to 1 plot of Bottle trap VS Sweepnet
+
+method_compare <- fly_site %>%  # Based on relative abundance of catch!
   select(-c(1:4)) %>% 
   filter(Site !="Eatery") %>% 
   select(-Site) %>% 
@@ -325,20 +329,30 @@ method_compare <- fly_site %>%
   rename(BottleTrap = "Bottle trap") %>% 
   mutate(Total = BottleTrap+ Sweepnet) %>%
   filter(!Total <=1) %>% 
-  mutate(Sweepnet= log10(Sweepnet+1),
-         BottleTrap= log10(BottleTrap+1),
-         Species= ifelse(
-  grepl("spp\\.$",  Species),
-  sub("^(\\w+) (spp\\.)$", "<i>\\1</i> \\2",  Species),
-  paste0("<i>",  Species, "</i>"))) %>% 
+  mutate(
+    BottleTrap_RA = BottleTrap / sum(BottleTrap),
+    Sweepnet_RA = Sweepnet / sum(Sweepnet),
+    SweepnetLog10= log10(Sweepnet+1),
+    BottleTrapLog10= log10(BottleTrap+1)) %>% 
+  mutate(BottleTrap_RA_Fac = ifelse((Species == "Musca domestica"),
+                                 (0.1*BottleTrap_RA), BottleTrap_RA),
+         Sweepnet_RA_Fac = ifelse((Species == "Musca domestica"),
+                                  (0.1*Sweepnet_RA), Sweepnet_RA )) %>% 
+  as.data.frame() %>% 
+  mutate(Species= ifelse(  # The magic script that does the trick!
+    grepl("spp\\.$",  Species),
+    sub("^(\\w+) (spp\\.)$", "<i>\\1</i> \\2",  Species),
+    paste0("<i>",  Species, "</i>"))) %>% 
   as.data.frame()
 
-ggplot(method_compare, aes(x = BottleTrap, y = Sweepnet)) +
-  geom_point(size = 3, color = "red", alpha = 0.15) +  # scatter points
+ggplot(method_compare,
+       aes(x = BottleTrapLog10, y = SweepnetLog10)) + # using log10 transformed
+  geom_point(size = 3, color = "red", alpha = 0.15) +   
   geom_abline(slope = 1, intercept = 0, 
               linetype = "dashed", color = "red" ) +   
   ggtext::geom_richtext(data = method_compare, 
-                        aes(x = BottleTrap, y = Sweepnet, label = Species),
+                        aes(x = BottleTrapLog10, y = SweepnetLog10, 
+                            label = Species),
                         fill = NA, label.color = "lightgrey",
                         size = 2.5,
                         alpha = 1)+ 
@@ -346,9 +360,36 @@ ggplot(method_compare, aes(x = BottleTrap, y = Sweepnet)) +
     x = "Bottle Trap",
     y = "Sweepnet"
   ) +
-  ylim(-0.2, 3.5) +
-  xlim(-0.2, 3.1) +
+  ylim(-0.02, 2.9) +
+  xlim(-0.02, 2.9) +
   theme_bw()
+
+
+ggplot(method_compare,
+       aes(x = BottleTrap_RA_Fac, y = Sweepnet_RA_Fac)) + # using factored Relative Abundance
+  geom_point(size = 3, color = "red", alpha = 0.15) +   
+  geom_abline(slope = 1, intercept = 0, 
+              linetype = "dashed", color = "red" ) +   
+  ggtext::geom_richtext(data = method_compare, 
+                        aes(x = BottleTrap_RA_Fac, y = Sweepnet_RA_Fac, 
+                            label = Species),
+                        fill = NA, label.color = "lightgrey",
+                        size = 2.7,
+                        alpha = 1)+ 
+  labs(
+    x = "Bottle Trap",
+    y = "Sweepnet"
+  ) +
+  ylim(-0.001, 0.095) +
+  xlim(-0.001, 0.095) +
+  theme_bw()
+
+####################################################################################
+
+
+
+
+
 
 
 
