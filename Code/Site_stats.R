@@ -307,3 +307,49 @@ ggplot()  +
   )
 
 
+
+method_compare <- fly_site %>% 
+  select(-c(1:4)) %>% 
+  filter(Site !="Eatery") %>% 
+  select(-Site) %>% 
+  group_by(Method) %>% 
+  summarise(across(where(is.numeric), sum)) %>% 
+  pivot_longer(
+    cols = -c("Method"),
+    names_to = "Species",
+    values_to = "Values"
+  ) %>% 
+  pivot_wider(
+    names_from = Method, values_from = Values
+  ) %>% 
+  rename(BottleTrap = "Bottle trap") %>% 
+  mutate(Total = BottleTrap+ Sweepnet) %>%
+  filter(!Total <=1) %>% 
+  mutate(Sweepnet= log10(Sweepnet+1),
+         BottleTrap= log10(BottleTrap+1),
+         Species= ifelse(
+  grepl("spp\\.$",  Species),
+  sub("^(\\w+) (spp\\.)$", "<i>\\1</i> \\2",  Species),
+  paste0("<i>",  Species, "</i>"))) %>% 
+  as.data.frame()
+
+ggplot(method_compare, aes(x = BottleTrap, y = Sweepnet)) +
+  geom_point(size = 3, color = "red", alpha = 0.15) +  # scatter points
+  geom_abline(slope = 1, intercept = 0, 
+              linetype = "dashed", color = "red" ) +   
+  ggtext::geom_richtext(data = method_compare, 
+                        aes(x = BottleTrap, y = Sweepnet, label = Species),
+                        fill = NA, label.color = "lightgrey",
+                        size = 2.5,
+                        alpha = 1)+ 
+  labs(
+    x = "Bottle Trap",
+    y = "Sweepnet"
+  ) +
+  ylim(-0.2, 3.5) +
+  xlim(-0.2, 3.1) +
+  theme_bw()
+
+
+
+
