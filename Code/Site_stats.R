@@ -386,11 +386,50 @@ ggplot(method_compare,
 
 ####################################################################################
 
+### Fishers test for significnat difference in proportion of 
+# Samples collected in Bottle traps VS Sweepnets
 
+BT_SN <- fly_site %>%  # Based on relative abundance of catch!
+  select(-c(1:4)) %>% 
+  filter(Site !="Eatery") %>% 
+  select(-Site) %>% 
+  group_by(Method) %>% 
+  summarise(across(where(is.numeric), sum)) %>% 
+  pivot_longer(
+    cols = -c("Method"),
+    names_to = "Species",
+    values_to = "Values"
+  ) %>% 
+  pivot_wider(
+    names_from = Method, values_from = Values
+  ) %>% 
+  rename(BottleTrap = "Bottle trap") %>% 
+  as.data.frame() 
+  
+row.names(BT_SN) <- BT_SN$Species
+BT_SN <- BT_SN[, -1]  
+fisher.test(BT_SN)
 
+sum(BT_SN$BottleTrap)
+sum(BT_SN$Sweepnet)
 
-
-
-
-
+fly_site %>%  # Based on relative abundance of catch!
+  select(-c(1:4)) %>% 
+ # filter(Site !="Eatery") %>% 
+  select(-Site) %>% 
+  group_by(Method) %>% 
+  summarise(across(where(is.numeric), sum)) %>% 
+  pivot_longer(
+    cols = -c("Method"),
+    names_to = "Species",
+    values_to = "Values"
+  ) %>% 
+  pivot_wider(
+    names_from = Method, values_from = Values
+  ) %>% 
+  rename(BottleTrap = "Bottle trap") %>% 
+  mutate(Total = BottleTrap+ Sweepnet) %>%
+  summarise(sumBottle = sum(BottleTrap),
+            sumSweep = sum(Sweepnet), 
+            sumTotal = sum(Total))
 
