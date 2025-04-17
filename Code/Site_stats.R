@@ -389,7 +389,7 @@ ggplot(method_compare,
 ### Fishers test for significnat difference in proportion of 
 # Samples collected in Bottle traps VS Sweepnets
 
-BT_SN <- fly_site %>%  # Based on relative abundance of catch!
+BT_SN <- fly_site %>%   
   select(-c(1:4)) %>% 
   filter(Site !="Eatery") %>% 
   select(-Site) %>% 
@@ -413,9 +413,10 @@ fisher.test(BT_SN)
 sum(BT_SN$BottleTrap)
 sum(BT_SN$Sweepnet)
 
-fly_site %>%  # Based on relative abundance of catch!
+
+# Some Exploratory Data analysis....
+fly_site %>%   
   select(-c(1:4)) %>% 
- # filter(Site !="Eatery") %>% 
   select(-Site) %>% 
   group_by(Method) %>% 
   summarise(across(where(is.numeric), sum)) %>% 
@@ -432,4 +433,8 @@ fly_site %>%  # Based on relative abundance of catch!
   summarise(sumBottle = sum(BottleTrap),
             sumSweep = sum(Sweepnet), 
             sumTotal = sum(Total))
+
+
+
+
 
