@@ -21,7 +21,7 @@ sex_fly <- sex_fly %>%
 head(sex_fly, 10)
 
 summary_sex <- sex_fly %>% 
-  filter(Collector=="Tavern") %>% 
+  filter(Food_site=="Tavern") %>% 
   select(-c(1:4)) %>% 
   pivot_longer(
     cols = -c(1,2),
@@ -71,6 +71,7 @@ summary_sex %>%
   filter(Species=="Phaenicia sericata") %>% 
   select(-Species) %>%
   column_to_rownames("Method") %>%
+ # t() %>% 
   fisher.test()
 
 summary_sex %>% 
@@ -78,3 +79,6 @@ summary_sex %>%
   select(-Species) %>%
   column_to_rownames("Method") %>%
   fisher.test()
+
+summary_sex %>% 
+  arrange(Species)
