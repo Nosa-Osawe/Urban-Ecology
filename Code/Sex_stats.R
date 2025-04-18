@@ -80,5 +80,95 @@ summary_sex %>%
   column_to_rownames("Method") %>%
   fisher.test()
 
-summary_sex %>% 
-  arrange(Species)
+summary_sex %>%
+  filter(Species == "Drosophila spp." & Method=="Bottle trap") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test() 
+
+# CHi-Square goodness of fit:
+summary_sex %>%
+  filter(Species == "Drosophila spp." & Method=="Bottle trap") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test()#X-squared = 2, df = 1, p-value = 0.1573
+
+
+
+#----cannot compute for Fannia canicularis
+
+summary_sex %>%
+  filter(Species == "Musca domestica" & Method=="Bottle trap") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test()  #X-squared = 19.762, df = 1, p-value = 8.769e-06
+
+
+summary_sex %>%
+  filter(Species == "Muscina spp." & Method=="Bottle trap") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test() # X-squared = 0.66667, df = 1, p-value = 0.4142
+
+summary_sex %>%
+  filter(Species == "Phaenicia cuprina" & Method=="Bottle trap") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test() # X-squared = 0.4, df = 1, p-value = 0.5271
+
+summary_sex %>%
+  filter(Species == "Phaenicia sericata" & Method=="Bottle trap") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test() #X-squared = 1.6667, df = 1, p-value = 0.1967
+
+summary_sex %>%
+  filter(Species == "Sarcophaga spp." & Method=="Bottle trap") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test() # X-squared = 1, df = 1, p-value = 0.3173
+
+
+
+summary_sex %>%
+  filter(Species == "Drosophila spp." & Method=="Bottle trap") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test()
+
+
+#----cannot compute for Fannia canicularis
+
+summary_sex %>%
+  filter(Species == "Musca domestica" & Method=="Sweepnet") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test() # X-squared = 38.297, df = 1, p-value = 6.076e-10
+
+
+  #----cannot compute for Muscina spp.
+
+summary_sex %>%
+  filter(Species == "Phaenicia cuprina" & Method=="Sweepnet") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test() # X-squared = 0.33333, df = 1, p-value = 0.5637
+
+summary_sex %>%
+  filter(Species == "Phaenicia sericata" & Method=="Sweepnet") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test() # X-squared = 0.54545, df = 1, p-value = 0.4602
+
+summary_sex %>%
+  filter(Species == "Sarcophaga spp." & Method=="Sweepnet") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test() # X-squared = 0, df = 1, p-value = 1
+
+summary_sex %>%
+  filter(Species == "Drosophila spp." & Method=="Sweepnet") %>% 
+  select(-Method) %>%
+  column_to_rownames("Species") %>%
+  chisq.test()
+
