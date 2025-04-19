@@ -103,6 +103,7 @@ mantel_result_lati <- mantel(fly_similarity, lat_dist,
 mantel_result_lati
 
 ########################################################################################
+
 fly_nmds_hell <- decostand(fly_nmds, method = "hellinger")
 fly_bray_nmds <- metaMDS(fly_nmds_hell, distance = "bray", k=2, na.rm = TRUE)
 
@@ -150,7 +151,7 @@ ggplot() +
   theme(
     text = element_text(family = "Times New Roman", size = 20)
   ) + labs(x = "NMDS1", y = "NMDS2")+
-  xlim(-0.6, 1.3) +  # Set x-axis to start at -4, leave upper limit automatic
+  xlim(-1.3, 0.9) +  # Set x-axis to start at -4, leave upper limit automatic
   geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
   geom_vline(xintercept = 0, linetype = "dashed", color = "black")+
   theme_minimal()+
@@ -409,6 +410,13 @@ BT_SN <- fly_site %>%
 row.names(BT_SN) <- BT_SN$Species
 BT_SN <- BT_SN[, -1]  
 fisher.test(BT_SN)
+
+install.packages("DescTools")  # Only the first time
+library(DescTools)
+
+GTest(BT_SN)
+
+
 
 sum(BT_SN$BottleTrap)
 sum(BT_SN$Sweepnet)
