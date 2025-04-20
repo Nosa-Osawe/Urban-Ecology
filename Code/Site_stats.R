@@ -4,6 +4,8 @@ library(readxl)
 library(pairwiseAdonis)
 library(ggtext)
 library(ggforce)
+library(DescTools)
+
 
 fly_site <- read_excel("C:\\Users\\DELL\\Documents\\Git in R\\Urban-Ecology\\Data\\Fly_community.xlsx",
                        sheet = "Site")
@@ -411,8 +413,6 @@ row.names(BT_SN) <- BT_SN$Species
 BT_SN <- BT_SN[, -1]  
 fisher.test(BT_SN)
 
-install.packages("DescTools")  # Only the first time
-library(DescTools)
 
 GTest(BT_SN)
 
