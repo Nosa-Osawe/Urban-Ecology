@@ -6,7 +6,7 @@ library(ggtext)
 library(ggforce)
 library(DescTools)
 
-
+# For the records: one gets slightly different result everytime nmds runs.Not a hastle, by the way
 fly_site <- read_excel("C:\\Users\\DELL\\Documents\\Git in R\\Urban-Ecology\\Data\\Fly_community.xlsx",
                        sheet = "Site")
 
@@ -94,6 +94,7 @@ ggplot(lat_decay_df, aes(x = Latitude_Distance, y = Similarity)) +
   ) +
   theme_minimal()
  
+# Testing this using a linear model
 lm_result <- lm(Similarity ~ Latitude_Distance, data = lat_decay_df)
 summary(lm_result)
 
@@ -106,6 +107,8 @@ mantel_result_lati
 
 ########################################################################################
 
+# Comparing community composition for fly communities in Eatery Vs Tavarn using Bray Curtis 
+
 fly_nmds_hell <- decostand(fly_nmds, method = "hellinger")
 fly_bray_nmds <- metaMDS(fly_nmds_hell, distance = "bray", k=2, na.rm = TRUE)
 
@@ -116,7 +119,7 @@ scores(fly_bray_nmds)
 
 
 fly_distance<- vegdist(fly_nmds_hell, method = "bray")
-anova(betadisper(fly_distance, fly_cat$Collector))
+anova(betadisper(fly_distance, fly_cat$Collector)) # PERMDISP
 
 adonis2 (fly_nmds~Collector, 
          data = fly_cat, permutations = 9999, # fly_cat from line 21
@@ -188,7 +191,7 @@ ggplot() +
 # This is for information sake, we are working with Jaccard index!
 
 fly_distance<- vegdist(fly_nmds_hell, method = "bray")
-anova(betadisper(fly_distance, fly_cat$Method))
+anova(betadisper(fly_distance, fly_cat$Method))  # PERMDISP
 
 adonis2 (fly_nmds~Method, 
          data = fly_cat, permutations = 9999, # fly_cat from line 21
@@ -201,7 +204,7 @@ pairwise2
 # using Jaccard index
 set.seed(9999)
  
-anova(betadisper(fly_dist, fly_cat$Method))
+anova(betadisper(fly_dist, fly_cat$Method)) # PERMDISP
 
 adonis2 (fly_dist~Method, 
          data = fly_cat, permutations = 9999, # fly_cat from line 21
