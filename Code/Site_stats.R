@@ -185,6 +185,7 @@ ggplot() +
  
 
 # Method of fly collection (Bottle trap & Sweep nets)
+# This is for information sake, we are working with Jaccard index!
 
 fly_distance<- vegdist(fly_nmds_hell, method = "bray")
 anova(betadisper(fly_distance, fly_cat$Method))
@@ -197,6 +198,7 @@ pairwise2 <- pairwise.adonis(fly_distance,fly_cat$Method)
 pairwise2
 
 ###########################################################
+# using Jaccard index
 set.seed(9999)
  
 anova(betadisper(fly_dist, fly_cat$Method))
