@@ -7,7 +7,9 @@ library(ggforce)
 library(DescTools)
 
 # For the records: one gets slightly different result everytime nmds runs.Not a hastle, by the way
-fly_site <- read_excel("C:\\Users\\DELL\\Documents\\Git in R\\Urban-Ecology\\Data\\Fly_community.xlsx",
+ 
+
+fly_site <- read_excel("Data\\Fly_community.xlsx",
                        sheet = "Site")
 
 sum(is.na(fly_site))

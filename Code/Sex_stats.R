@@ -6,7 +6,7 @@ library(ggtext)
 library(ggforce)
 
 
-sex_fly <- read_excel("C:\\Users\\DELL\\Documents\\Git in R\\Urban-Ecology\\Data\\Fly_community.xlsx",
+sex_fly <- read_excel("Data\\Fly_community.xlsx",
                        sheet = "By_sex")
 
 sum(is.na(sex_fly))
@@ -62,13 +62,13 @@ summary_sex %>%
   fisher.test()
 
 summary_sex %>% 
-  filter(Species=="Phaenicia cuprina") %>% 
+  filter(Species=="Lucilia cuprina") %>% 
   select(-Species) %>%
   column_to_rownames("Method") %>%
   fisher.test()
 
 summary_sex %>% 
-  filter(Species=="Phaenicia sericata") %>% 
+  filter(Species=="Lucilia sericata") %>% 
   select(-Species) %>%
   column_to_rownames("Method") %>%
  # t() %>% 
@@ -111,13 +111,13 @@ summary_sex %>%
   chisq.test() # X-squared = 0.66667, df = 1, p-value = 0.4142
 
 summary_sex %>%
-  filter(Species == "Phaenicia cuprina" & Method=="Bottle trap") %>% 
+  filter(Species == "Lucilia cuprina" & Method=="Bottle trap") %>% 
   select(-Method) %>%
   column_to_rownames("Species") %>%
   chisq.test() # X-squared = 0.4, df = 1, p-value = 0.5271
 
 summary_sex %>%
-  filter(Species == "Phaenicia sericata" & Method=="Bottle trap") %>% 
+  filter(Species == "Lucilia sericata" & Method=="Bottle trap") %>% 
   select(-Method) %>%
   column_to_rownames("Species") %>%
   chisq.test() #X-squared = 1.6667, df = 1, p-value = 0.1967
@@ -149,13 +149,13 @@ summary_sex %>%
   #----cannot compute for Muscina spp.
 
 summary_sex %>%
-  filter(Species == "Phaenicia cuprina" & Method=="Sweepnet") %>% 
+  filter(Species == "Lucilia cuprina" & Method=="Sweepnet") %>% 
   select(-Method) %>%
   column_to_rownames("Species") %>%
   chisq.test() # X-squared = 0.33333, df = 1, p-value = 0.5637
 
 summary_sex %>%
-  filter(Species == "Phaenicia sericata" & Method=="Sweepnet") %>% 
+  filter(Species == "Lucilia sericata" & Method=="Sweepnet") %>% 
   select(-Method) %>%
   column_to_rownames("Species") %>%
   chisq.test() # X-squared = 0.54545, df = 1, p-value = 0.4602
