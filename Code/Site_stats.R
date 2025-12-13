@@ -6,8 +6,14 @@ library(ggtext)
 library(ggforce)
 library(DescTools)
 
-# For the records: one gets slightly different result everytime nmds runs.Not a hastle, by the way
- 
+# Source - https://stackoverflow.com/a/79155895
+# Posted by dariober
+# Retrieved 2025-12-13, License - CC BY-SA 4.0
+
+# # pairwiseAdonis is not on CRAN at this time, so:
+# install.packages('devtools') # Assuming you don't have devtools package already
+# library(devtools)
+# install_github("pmartinezarbizu/pairwiseAdonis/pairwiseAdonis", force = TRUE)
 
 fly_site <- read_excel("Data\\Fly_community.xlsx",
                        sheet = "Site")
@@ -268,6 +274,7 @@ ggplot()  +
 
 #################################################################################
 
+# sampling areas (Eatery, Kitchen, and Parlour) based on Jaccard dissimilarity 
 
 anova(betadisper(fly_dist, fly_cat$Site))
 
