@@ -371,7 +371,7 @@ ggplot(method_compare,
                         aes(x = BottleTrapLog10, y = SweepnetLog10, 
                             label = Species),
                         fill = NA, label.color = "lightgrey",
-                        size = 2.5,
+                        size = 4.0,
                         alpha = 1)+ 
   labs(
     x = "Bottle Trap",
@@ -391,7 +391,7 @@ ggplot(method_compare,
                         aes(x = BottleTrap_RA_Fac, y = Sweepnet_RA_Fac, 
                             label = Species),
                         fill = NA, label.color = "lightgrey",
-                        size = 2.7,
+                        size = 4.0,
                         alpha = 1)+ 
   labs(
     x = "Bottle Trap",
