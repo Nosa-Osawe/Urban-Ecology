@@ -161,6 +161,7 @@ ggplot() +
   geom_point(data = fly_comb, aes(x = MDS1, y = MDS2, 
                                        color = Collector, 
                                        fill = Collector,
+                                  shape = Collector,
                                   alpha = 0.95
   ), 
   size = 3) + 
@@ -245,9 +246,9 @@ ggplot()  +
   
   geom_jitter(
   data = method_comb, 
-  aes(x = MDS1, y = MDS2, colour = Method), 
-  size = 6, 
-  shape = 3,
+  aes(x = MDS1, y = MDS2, colour = Method, shape = Method), 
+  size = 4, 
+ # shape = 3,
   alpha = 0.7, 
   width = 0.04,  # horizontal jitter
   height = 0.04  # vertical jitter
@@ -296,7 +297,7 @@ pairwise3
 ggplot()  +
   geom_jitter(
     data = method_comb, 
-    aes(x = MDS1, y = MDS2, colour = Site, fill= Site), 
+    aes(x = MDS1, y = MDS2, colour = Site, fill= Site, shape = Site), 
     size = 4, 
    # shape = 1,
     alpha = 0.6, 
