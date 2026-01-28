@@ -1,3 +1,8 @@
+
+# starts by clering R's brain
+rm(list = ls())
+
+
 library(vegan)
 library(tidyverse)
 library(readxl)
@@ -141,7 +146,7 @@ color_pal <- c("#4daf4a","#ff7f00","#377eb8","purple","#e31a1c")
 
 nmds_fly <- as.data.frame(fly_bray_nmds$points)
 sc_nmds_fly <- as.data.frame(scores(fly_bray_nmds)$species)  
-fly_comb <- as.data.frame(cbind(nmds_fly, fly_cat))
+fly_comb <- as.data.frame(cbind(nmds_fly, fly_cat))  
 
 
 
