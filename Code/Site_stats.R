@@ -158,48 +158,53 @@ sc_nmds_fly$label_html <- ifelse(
 
 # 
 ggplot() +
-  geom_point(data = fly_comb, aes(x = MDS1, y = MDS2, 
-                                       color = Collector, 
-                                       fill = Collector,
-                                  shape = Collector,
-                                  alpha = 0.95
-  ), 
-  size = 3) + 
-  scale_colour_manual(values = color_pal)+
-  scale_fill_manual(values = color_pal)+
+  geom_point(
+    data = fly_comb,
+    aes(x = MDS1, y = MDS2,
+        color = Collector,
+        fill  = Collector,
+        shape = Collector,
+        alpha = 0.95),
+    size = 3
+  ) +
+  scale_colour_manual(values = color_pal, name = "Site") +
+  scale_fill_manual(values = color_pal, name = "Site") +
+  scale_shape_manual(
+    values = c(16, 17, 15, 18, 3),
+    name = "Site"
+  ) +
   theme(
     text = element_text(family = "Times New Roman", size = 20)
-  ) + labs(x = "NMDS1", y = "NMDS2")+
-  xlim(-1.3, 0.9) +  # Set x-axis to start at -4, leave upper limit automatic
-  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
-  geom_vline(xintercept = 0, linetype = "dashed", color = "black")+
-  theme_minimal()+
-  stat_ellipse(data = fly_comb, 
-               aes(x = MDS1, y = MDS2, 
-                   group = Collector, 
-                   color = Collector), 
-               geom = "path", 
-               level = 0.90, 
-               linewidth = 0.7,   
-               show.legend = NA) +
-  ggtext::geom_richtext(data = sc_nmds_fly, 
-                        aes(x = NMDS1, y = NMDS2, label = label_html),
-                        fill = "lightgrey", label.color = NA,
-                        size = 4,
-                        alpha = 0.3)+
-  ggtext::geom_richtext(data = sc_nmds_fly, 
-                        aes(x = NMDS1, y = NMDS2, label = label_html),
-                        fill = NA, label.color = NA,
-                        size = 4,
-                        alpha = 1)+
+  ) +
+  labs(x = "NMDS1", y = "NMDS2") +
+  xlim(-1.3, 0.9) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  theme_minimal() +
+  stat_ellipse(
+    data = fly_comb,
+    aes(x = MDS1, y = MDS2, group = Collector, color = Collector),
+    geom = "path",
+    level = 0.90,
+    linewidth = 0.7,
+    show.legend = FALSE
+  ) +
+  ggtext::geom_richtext(
+    data = sc_nmds_fly,
+    aes(x = NMDS1, y = NMDS2, label = label_html),
+    fill = "lightgrey", label.color = NA,
+    size = 4, alpha = 0.3
+  ) +
+  ggtext::geom_richtext(
+    data = sc_nmds_fly,
+    aes(x = NMDS1, y = NMDS2, label = label_html),
+    fill = NA, label.color = NA,
+    size = 4
+  ) +
   guides(
-    color = guide_legend(title = "Site"),   
-    shape = "none", 
-    fill = "none",
-    size = "none",
-    alpha = "none"
-  )
- 
+    fill  = "none",
+    size  = "none",
+    alpha = "none")
 
 # Method of fly collection (Bottle trap & Sweep nets)
 # This is for information sake, we are working with Jaccard index!
@@ -242,41 +247,43 @@ method_comb <- as.data.frame(cbind(nmds_method, fly_cat))
 
 method_comb
 # 
-ggplot()  +
-  
+ggplot() +
   geom_jitter(
-  data = method_comb, 
-  aes(x = MDS1, y = MDS2, colour = Method, shape = Method), 
-  size = 4, 
- # shape = 3,
-  alpha = 0.7, 
-  width = 0.04,  # horizontal jitter
-  height = 0.04  # vertical jitter
-) + 
-  scale_colour_manual(values = c("orange","blue"))+
-  scale_fill_manual(values = c("orange","blue"))+
+    data = method_comb, 
+    aes(x = MDS1, y = MDS2, colour = Method, shape = Method), 
+    size = 4,
+    alpha = 0.7, 
+    width = 0.04,
+    height = 0.04
+  ) + 
+  scale_colour_manual(
+    values = c("orange","blue"),
+    name = "Collection Method"
+  ) +
+  scale_shape_manual(
+    values = c(16, 17),
+    name = "Collection Method"
+  ) +
   theme(
     text = element_text(family = "Times New Roman", size = 20)
-  ) + labs(x = "NMDS1", y = "NMDS2")+
+  ) +
+  labs(x = "NMDS1", y = "NMDS2") +
+  
   geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
-  geom_vline(xintercept = 0, linetype = "dashed", color = "black")+
-  theme_minimal()+
-  stat_ellipse(data = method_comb, 
-               aes(x = MDS1, y = MDS2, 
-                   group = Method, 
-                   color = Method), 
-               geom = "path", 
-               level = 0.90, 
-               linewidth = 0.2,   
-               show.legend = NA) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "black") +
+  theme_minimal() +
+  stat_ellipse(
+    data = method_comb, 
+    aes(x = MDS1, y = MDS2, group = Method, color = Method), 
+    geom = "path", 
+    level = 0.90, 
+    linewidth = 0.2,
+    show.legend = FALSE
+  ) +
   guides(
-    color = guide_legend(title = "Collection Method"),   
-    shape = "none", 
-    fill = "none",
-    size = "none",
-    alpha = "none"
-  )
-
+    fill  = "none",
+    size  = "none",
+    alpha = "none")
 
 #################################################################################
 
@@ -305,8 +312,18 @@ ggplot()  +
     height = 0.09  # vertical jitter
   ) + 
   ylim(-1.3, 1) + 
-  scale_colour_manual(values = c("black","blue", "red"))+
-  scale_fill_manual(values = c("black","blue", "red"))+
+  scale_colour_manual(
+    values = c("black", "blue", "red"),
+    name = "Areas"
+  ) +
+  scale_fill_manual(
+    values = c("black", "blue", "red"),
+    name = "Areas"
+  ) +
+  scale_shape_manual(
+    values = c(16, 17, 15),
+    name = "Areas"
+  ) +
   theme(
     text = element_text(family = "Times New Roman", size = 20)
   ) + labs(x = "NMDS1", y = "NMDS2")+
@@ -322,13 +339,9 @@ ggplot()  +
     show.legend = FALSE
   ) +
   guides(
-    color = guide_legend(title = "Areas"),   
-    shape = "none", 
-    fill = "none",
-    size = "none",
+    size  = "none",
     alpha = "none"
   )
-
 
 
 ########################-------------------------------------------------------
